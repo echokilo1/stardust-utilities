@@ -1,3 +1,12 @@
 All the utility scripts for extracting data from the collection service
-Replace xtrace jar with your compiled version and then:
-javac -cp lib/xtrace-2.2-11_2011.jar:lib/hbase-0.94.4.jar:lib/hadoop-core-1.0.4.jar:lib/commons-logging-1.1.1.jar:lib/log4j-1.2.16.jar:lib/slf4j-log4j12-1.5.8.jar:lib/slf4j-api-1.5.8.jar:. stardust/*.java
+Format of inst_pts table key is: | Job ID | Client ID| task ID | <parent, current> | timestamp |
+
+BUILD INSTRUCTIONS:
+
+Replace xtrace and hbase jars with your versions and then:
+
+javac -cp lib/xtrace-2.2-11_2011.jar:lib/hbase-0.94.4.jar:lib/hadoop-core-1.0.4.jar:lib/commons-logging-1.1.1.jar:lib/log4j-1.2.16.jar:lib/slf4j-log4j12-1.5.8.jar:lib/slf4j-api-1.5.8.jar:lib/commons-configuration-1.6.jar:lib/commons-lang-2.5.jar:lib/zookeeper-3.4.5.jar:lib/protobuf-java-2.4.0a.jar:. HBaseToFile.java
+
+java -cp lib/xtrace-2.2-11_2011.jar:lib/hbase-0.94.4.jar:lib/hadoop-core-1.0.4.jar:lib/commons-logging-1.1.1.jar:lib/log4j-1.2.16.jar:lib/slf4j-log4j12-1.5.8.jar:lib/slf4j-api-1.5.8.jar:lib/commons-configuration-1.6.jar:lib/commons-lang-2.5.jar:lib/zookeeperow r-3.4.5.jar:lib/protobuf-java-2.4.0a.jar:. HBaseToFile report.out
+
+
