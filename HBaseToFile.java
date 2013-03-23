@@ -23,6 +23,7 @@ public class HBaseToFile {
       Configuration conf = HBaseConfiguration.create();
       HTable table = new HTable(conf, "inst_pts");
       Scan s;
+      String delim = "\\.";
       if (args.length >= 2)
         s = new Scan(args[1].getBytes());
       else
@@ -36,18 +37,34 @@ public class HBaseToFile {
           String label = new String(r.getFamilyMap("inst_pt_name".getBytes()).keySet().iterator().next());
           String[] tokens = rowkey.split("\\|");
           String[] reportIds = tokens[2].split(",");
-          String[] labeltok = label.split("_");
+          String[] labeltok = label.split(delim);
           String report = "X-Trace Report ver 1.0";
           report       += "\nX-Trace: 19" + tokens[1] + reportIds[reportIds.length-1];
-          report       += "\nHost: " + labeltok[0];
-          report       += "\nAgent: " + labeltok[1];
+          if (labeltok.length == 4) {
+              /* New way */              
+              report       += "\nHost: " + labeltok[2];
+              report       += "\nAgent: " + labeltok[0];
+              report       += "\nOther: " + labeltok[1];
+              report       += "\nCall: " + labeltok[3];
+          } else {
+              /* Old way */
+              report       += "\nHost: " + labeltok[0];
+              report       += "\nAgent: " + labeltok[1];
+          }
           report       += "\nLabel: " + label;
           report       += "\nTaskID: " + tokens[0];
           for(int i = 0; i < reportIds.length - 1; i++) {
           report       += "\nEdge: " + reportIds[i];
           }
+          if (tokens.length > 4) {
+              /* New way with CPU as second to last token */
+              report       += "\nCPU: " + tokens[tokens.length-2];
+          }
           report       += "\nTimestamp: " + tokens[tokens.length-1];
-          out.writeInt(report.getBytes("UTF-8").length);
+          report       += "\n";
+
+          /*ekrevat: not sure why weare writing this*/
+          //out.writeInt(report.getBytes("UTF-8").length);
           out.write(report.getBytes("UTF-8"));
           count++;
         }

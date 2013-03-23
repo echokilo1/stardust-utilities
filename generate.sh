@@ -7,8 +7,9 @@ then
   z=0
   for f in ${l}
   do
-    printf "${f}\n"
-    cat ${f} | java Reconstruct ${x} 
+    #printf "${f}\n"
+    fname=`basename ${f} .txt`
+    cat ${f} | java stardust.Reconstruct ${x} > dots/${fname}.dot
     if [ $? -eq 1 ]
     then
       y=$(($y+1))
